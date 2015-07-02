@@ -1,0 +1,63 @@
+buildscript {
+    ext {
+        springBootVersion = '1.2.4.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}") 
+        classpath("io.spring.gradle:dependency-management-plugin:0.5.1.RELEASE")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'spring-boot' 
+apply plugin: 'io.spring.dependency-management' 
+
+jar {
+    baseName = 'polls'
+    version = '0.0.1-SNAPSHOT'
+}
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven{
+    	url 'http://maven.vaadin.com/vaadin-addons'
+    }
+    
+}
+
+
+dependencies {
+    compile("com.vaadin:vaadin-spring-boot-starter:1.0.0.beta3")
+    compile("org.vaadin.addons:blackboard:2.2.0") 
+    compile("com.vaadin:vaadin-themes:7.4.0")
+    compile("com.vaadin:aadin-client-compiled:7.4.0")
+    compile("org.springframework.boot:spring-boot-starter-data-mongodb")
+    compile("org.springframework.boot:spring-boot-starter-logging")
+    compile("org.projectlombok:lombok:1.16.4")
+    testCompile("org.springframework.boot:spring-boot-starter-test") 
+}
+
+dependencyManagement {
+	imports { 
+		mavenBom "com.vaadin:vaadin-bom:7.4.5" 
+	}
+}
+
+
+eclipse {
+    classpath {
+         containers.remove('org.eclipse.jdt.launching.JRE_CONTAINER')
+         containers 'org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8'
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
